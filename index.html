@@ -416,6 +416,10 @@
       <div id="questions-tda"></div>
 
       <div class="govuk-button-group">
+        <button class="govuk-button govuk-button--secondary" onclick="exportWordBoard('tda')">Download TDA report (.doc)</button>
+        <button class="govuk-button govuk-button--secondary" onclick="printBoard('tda')">Print / Save TDA as PDF</button>
+      </div>
+      <div class="govuk-button-group" style="margin-top:.25rem">
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('arb')">Next: ARB questions →</button>
       </div>
     </div>
@@ -439,6 +443,10 @@
       <div id="questions-arb"></div>
 
       <div class="govuk-button-group">
+        <button class="govuk-button govuk-button--secondary" onclick="exportWordBoard('arb')">Download ARB report (.doc)</button>
+        <button class="govuk-button govuk-button--secondary" onclick="printBoard('arb')">Print / Save ARB as PDF</button>
+      </div>
+      <div class="govuk-button-group" style="margin-top:.25rem">
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('tda')">← Back: TDA</button>
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('sab')">Next: SAB questions →</button>
       </div>
@@ -464,6 +472,10 @@
       <div id="questions-sab"></div>
 
       <div class="govuk-button-group">
+        <button class="govuk-button govuk-button--secondary" onclick="exportWordBoard('sab')">Download SAB report (.doc)</button>
+        <button class="govuk-button govuk-button--secondary" onclick="printBoard('sab')">Print / Save SAB as PDF</button>
+      </div>
+      <div class="govuk-button-group" style="margin-top:.25rem">
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('arb')">← Back: ARB</button>
         <button class="govuk-button" onclick="switchTab('summary')">Review &amp; Export →</button>
       </div>
@@ -987,6 +999,61 @@ function notify(msg, isError) {
   el.className = 'notification-banner show' + (isError ? '' : ' notification-banner--success');
   clearTimeout(el._t);
   el._t = setTimeout(() => { el.classList.remove('show'); }, 4000);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SINGLE-BOARD EXPORT
+══════════════════════════════════════════════════════════════════ */
+function boardReportHTML(boardKey) {
+  const board = BOARDS[boardKey];
+  const date = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
+  let html = `<html><head><meta charset="utf-8"><title>${board.label} — Governance Review</title>
+    <style>
+      body { font-family: Arial, sans-serif; font-size: 11pt; color: #0b0c0c; }
+      h1 { font-size: 18pt; } h2 { font-size: 14pt; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+      table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+      th { background: #f3f2f1; font-size: 9pt; text-align: left; padding: 6px 8px; border: 1px solid #b1b4b6; }
+      td { padding: 6px 8px; border: 1px solid #b1b4b6; font-size: 10pt; vertical-align: top; }
+      .rag-red   { background: #d4351c; color: #fff; padding: 2px 6px; font-weight: bold; font-size: 8pt; }
+      .rag-amber { background: #f4b400; color: #0b0c0c; padding: 2px 6px; font-weight: bold; font-size: 8pt; }
+      .rag-green { background: #00703c; color: #fff; padding: 2px 6px; font-weight: bold; font-size: 8pt; }
+      .rag-na    { background: #888; color: #fff; padding: 2px 6px; font-weight: bold; font-size: 8pt; }
+    </style></head><body>
+    <h1>${board.label}</h1>
+    <p>Exported: ${date}</p>
+    <table><tr><th>#</th><th>Question</th><th>RAG</th><th>Response</th></tr>`;
+
+  board.questions.forEach((item, idx) => {
+    const rag = state[boardKey].rags[idx] || '';
+    const ans = (state[boardKey].answers[idx] || '').replace(/\n/g,'<br>');
+    const ragCell = rag ? `<span class="rag-${rag}">${rag.toUpperCase()}</span>` : '—';
+    html += `<tr>
+      <td>${idx+1}</td>
+      <td>${item.q}</td>
+      <td>${ragCell}</td>
+      <td>${ans || '<em>No response</em>'}</td>
+    </tr>`;
+  });
+  html += '</table></body></html>';
+  return html;
+}
+
+function exportWordBoard(boardKey) {
+  const html = boardReportHTML(boardKey);
+  const blob = new Blob(['﻿' + html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `governance-${boardKey}-report.doc`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function printBoard(boardKey) {
+  const html = boardReportHTML(boardKey);
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  win.print();
 }
 
 /* ══════════════════════════════════════════════════════════════════
