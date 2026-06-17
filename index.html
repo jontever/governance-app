@@ -378,17 +378,17 @@
 
     <!-- Tab navigation -->
     <nav class="tab-nav" role="tablist" aria-label="Governance boards">
-      <button class="tab-nav__item active" role="tab" aria-selected="true"  aria-controls="panel-tda" id="tab-tda" onclick="switchTab('tda')">
+      <button class="tab-nav__item active" role="tab" aria-selected="true"  aria-controls="panel-sab" id="tab-sab" onclick="switchTab('sab')">
+        SAB
+        <span class="tab-badge" id="badge-sab" aria-label="0 of 12 answered">0/12</span>
+      </button>
+      <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-tda" id="tab-tda" onclick="switchTab('tda')">
         TDA
         <span class="tab-badge" id="badge-tda" aria-label="0 of 12 answered">0/12</span>
       </button>
       <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-arb" id="tab-arb" onclick="switchTab('arb')">
         ARB
         <span class="tab-badge" id="badge-arb" aria-label="0 of 12 answered">0/12</span>
-      </button>
-      <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-sab" id="tab-sab" onclick="switchTab('sab')">
-        SAB
-        <span class="tab-badge" id="badge-sab" aria-label="0 of 12 answered">0/12</span>
       </button>
       <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-summary" id="tab-summary" onclick="switchTab('summary')">
         Review &amp; Export
@@ -397,7 +397,7 @@
     </nav>
 
     <!-- ══════════ TDA PANEL ══════════ -->
-    <div class="tab-panel active" id="panel-tda" role="tabpanel" aria-labelledby="tab-tda">
+    <div class="tab-panel" id="panel-tda" role="tabpanel" aria-labelledby="tab-tda">
 
       <h2 class="govuk-heading-l">Technical Design Authority (TDA)</h2>
       <div class="govuk-inset-text">
@@ -420,6 +420,7 @@
         <button class="govuk-button govuk-button--secondary" onclick="printBoard('tda')">Print / Save TDA as PDF</button>
       </div>
       <div class="govuk-button-group" style="margin-top:.25rem">
+        <button class="govuk-button govuk-button--secondary" onclick="switchTab('sab')">← Back: SAB</button>
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('arb')">Next: ARB questions →</button>
       </div>
     </div>
@@ -448,12 +449,12 @@
       </div>
       <div class="govuk-button-group" style="margin-top:.25rem">
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('tda')">← Back: TDA</button>
-        <button class="govuk-button govuk-button--secondary" onclick="switchTab('sab')">Next: SAB questions →</button>
+        <button class="govuk-button" onclick="switchTab('summary')">Review &amp; Export →</button>
       </div>
     </div>
 
     <!-- ══════════ SAB PANEL ══════════ -->
-    <div class="tab-panel" id="panel-sab" role="tabpanel" aria-labelledby="tab-sab">
+    <div class="tab-panel active" id="panel-sab" role="tabpanel" aria-labelledby="tab-sab">
 
       <h2 class="govuk-heading-l">Solution Architecture Board (SAB)</h2>
       <div class="govuk-inset-text">
@@ -476,8 +477,7 @@
         <button class="govuk-button govuk-button--secondary" onclick="printBoard('sab')">Print / Save SAB as PDF</button>
       </div>
       <div class="govuk-button-group" style="margin-top:.25rem">
-        <button class="govuk-button govuk-button--secondary" onclick="switchTab('arb')">← Back: ARB</button>
-        <button class="govuk-button" onclick="switchTab('summary')">Review &amp; Export →</button>
+        <button class="govuk-button govuk-button--secondary" onclick="switchTab('tda')">Next: TDA questions →</button>
       </div>
     </div>
 
