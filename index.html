@@ -378,7 +378,10 @@
 
     <!-- Tab navigation -->
     <nav class="tab-nav" role="tablist" aria-label="Governance boards">
-      <button class="tab-nav__item active" role="tab" aria-selected="true"  aria-controls="panel-sab" id="tab-sab" onclick="switchTab('sab')">
+      <button class="tab-nav__item active" role="tab" aria-selected="true"  aria-controls="panel-overview" id="tab-overview" onclick="switchTab('overview')">
+        Overview
+      </button>
+      <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-sab" id="tab-sab" onclick="switchTab('sab')">
         SAB
         <span class="tab-badge" id="badge-sab" aria-label="0 of 12 answered">0/12</span>
       </button>
@@ -389,6 +392,10 @@
       <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-arb" id="tab-arb" onclick="switchTab('arb')">
         ARB
         <span class="tab-badge" id="badge-arb" aria-label="0 of 12 answered">0/12</span>
+      </button>
+      <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-cab" id="tab-cab" onclick="switchTab('cab')">
+        CAB
+        <span class="tab-badge" id="badge-cab" aria-label="0 of 12 answered">0/12</span>
       </button>
       <button class="tab-nav__item" role="tab" aria-selected="false" aria-controls="panel-summary" id="tab-summary" onclick="switchTab('summary')">
         Review &amp; Export
@@ -449,12 +456,140 @@
       </div>
       <div class="govuk-button-group" style="margin-top:.25rem">
         <button class="govuk-button govuk-button--secondary" onclick="switchTab('tda')">← Back: TDA</button>
+        <button class="govuk-button govuk-button--secondary" onclick="switchTab('cab')">Next: CAB questions →</button>
+      </div>
+    </div>
+
+    <!-- ══════════ CAB PANEL ══════════ -->
+    <div class="tab-panel" id="panel-cab" role="tabpanel" aria-labelledby="tab-cab">
+
+      <h2 class="govuk-heading-l">Change Advisory Board (CAB)</h2>
+      <div class="govuk-inset-text">
+        The CAB governs changes to live services and infrastructure. It assesses risk, ensures rollback
+        plans are in place, and formally authorises changes before they proceed to production.
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar-outer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="prog-cab-bar">
+          <div class="progress-bar-inner" id="prog-cab-inner" style="width:0%"></div>
+        </div>
+        <span class="progress-text" id="prog-cab-text">0 of 12 answered</span>
+      </div>
+
+      <div id="questions-cab"></div>
+
+      <div class="govuk-button-group">
+        <button class="govuk-button govuk-button--secondary" onclick="exportWordBoard('cab')">Download CAB report (.doc)</button>
+        <button class="govuk-button govuk-button--secondary" onclick="printBoard('cab')">Print / Save CAB as PDF</button>
+      </div>
+      <div class="govuk-button-group" style="margin-top:.25rem">
+        <button class="govuk-button govuk-button--secondary" onclick="switchTab('arb')">← Back: ARB</button>
         <button class="govuk-button" onclick="switchTab('summary')">Review &amp; Export →</button>
       </div>
     </div>
 
+    <!-- ══════════ OVERVIEW PANEL ══════════ -->
+    <div class="tab-panel active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+
+      <h2 class="govuk-heading-l">Governance Framework</h2>
+      <p class="govuk-body-l">
+        This tool supports formal submission to four governance boards. Each board plays a distinct role
+        in managing risk, ensuring compliance, and maintaining architectural integrity across the delivery lifecycle.
+      </p>
+
+      <!-- Flow diagram -->
+      <div style="margin-bottom:2rem;overflow-x:auto">
+        <svg viewBox="0 0 860 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Governance board flow: SAB leads to TDA, then ARB, then CAB"
+             style="width:100%;max-width:860px;min-width:480px;display:block">
+          <!-- SAB -->
+          <rect x="10" y="20" width="170" height="80" rx="6" fill="#1d70b8"/>
+          <text x="95" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="white">SAB</text>
+          <text x="95" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#cce0f5">Solution Architecture</text>
+          <text x="95" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#cce0f5">Board</text>
+          <!-- Arrow 1 -->
+          <line x1="182" y1="60" x2="212" y2="60" stroke="#505a5f" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- TDA -->
+          <rect x="215" y="20" width="170" height="80" rx="6" fill="#003078"/>
+          <text x="300" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="white">TDA</text>
+          <text x="300" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#99b8e8">Technical Design</text>
+          <text x="300" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#99b8e8">Authority</text>
+          <!-- Arrow 2 -->
+          <line x1="387" y1="60" x2="417" y2="60" stroke="#505a5f" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- ARB -->
+          <rect x="420" y="20" width="170" height="80" rx="6" fill="#4c2c92"/>
+          <text x="505" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="white">ARB</text>
+          <text x="505" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#c8b8f0">Architecture Review</text>
+          <text x="505" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#c8b8f0">Board</text>
+          <!-- Arrow 3 -->
+          <line x1="592" y1="60" x2="622" y2="60" stroke="#505a5f" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- CAB -->
+          <rect x="625" y="20" width="170" height="80" rx="6" fill="#00703c"/>
+          <text x="710" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="white">CAB</text>
+          <text x="710" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#99d9b8">Change Advisory</text>
+          <text x="710" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#99d9b8">Board</text>
+          <!-- Delivery lifecycle label -->
+          <text x="430" y="114" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#505a5f">← Design &amp; Build phase ─────────────────────────── Change &amp; Release →</text>
+          <!-- Arrowhead marker -->
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#505a5f"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Board cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+
+        <div style="border-top:4px solid #1d70b8;padding:1rem;background:#f3f2f1">
+          <div style="font-size:1.1rem;font-weight:700;color:#1d70b8;margin-bottom:.4rem">SAB</div>
+          <div style="font-size:.8125rem;font-weight:700;color:#0b0c0c;margin-bottom:.5rem">Solution Architecture Board</div>
+          <p style="font-size:.8125rem;line-height:1.5;color:#505a5f;margin:0">
+            <strong>Governance:</strong> Formally approves solution designs before build begins, ensuring decisions are documented and accountable.<br><br>
+            <strong>Risk:</strong> Identifies solution-level risks early, including dependency, cost and delivery risks, before commitments are made.<br><br>
+            <strong>Compliance:</strong> Verifies alignment with business requirements, regulatory obligations and organisational policy.
+          </p>
+        </div>
+
+        <div style="border-top:4px solid #003078;padding:1rem;background:#f3f2f1">
+          <div style="font-size:1.1rem;font-weight:700;color:#003078;margin-bottom:.4rem">TDA</div>
+          <div style="font-size:.8125rem;font-weight:700;color:#0b0c0c;margin-bottom:.5rem">Technical Design Authority</div>
+          <p style="font-size:.8125rem;line-height:1.5;color:#505a5f;margin:0">
+            <strong>Governance:</strong> Validates technical designs against organisational standards, ensuring all design decisions are reviewed and approved.<br><br>
+            <strong>Risk:</strong> Identifies technical and security risks in the design, including threat vectors, integration weaknesses and resilience gaps.<br><br>
+            <strong>Compliance:</strong> Ensures conformance with NCSC Secure by Design, NIST, ISO 27001 and UK GDPR data protection requirements.
+          </p>
+        </div>
+
+        <div style="border-top:4px solid #4c2c92;padding:1rem;background:#f3f2f1">
+          <div style="font-size:1.1rem;font-weight:700;color:#4c2c92;margin-bottom:.4rem">ARB</div>
+          <div style="font-size:.8125rem;font-weight:700;color:#0b0c0c;margin-bottom:.5rem">Architecture Review Board</div>
+          <p style="font-size:.8125rem;line-height:1.5;color:#505a5f;margin:0">
+            <strong>Governance:</strong> Ensures architecture decisions are formally recorded, consistent with enterprise strategy and not made in isolation.<br><br>
+            <strong>Risk:</strong> Manages architecture risk including technical debt, vendor lock-in, scalability constraints and cross-cutting concerns.<br><br>
+            <strong>Compliance:</strong> Enforces enterprise architecture standards, cloud strategy alignment and interoperability requirements.
+          </p>
+        </div>
+
+        <div style="border-top:4px solid #00703c;padding:1rem;background:#f3f2f1">
+          <div style="font-size:1.1rem;font-weight:700;color:#00703c;margin-bottom:.4rem">CAB</div>
+          <div style="font-size:.8125rem;font-weight:700;color:#0b0c0c;margin-bottom:.5rem">Change Advisory Board</div>
+          <p style="font-size:.8125rem;line-height:1.5;color:#505a5f;margin:0">
+            <strong>Governance:</strong> Provides formal authorisation for all changes to live services, ensuring accountability and traceability of every change.<br><br>
+            <strong>Risk:</strong> Assesses change risk, rollback plans and implementation schedules to minimise service disruption.<br><br>
+            <strong>Compliance:</strong> Enforces ITIL/ITSM change management processes and ensures audit trails meet regulatory and contractual requirements.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="govuk-button-group">
+        <button class="govuk-button" onclick="switchTab('sab')">Start: SAB questions →</button>
+      </div>
+    </div>
+
     <!-- ══════════ SAB PANEL ══════════ -->
-    <div class="tab-panel active" id="panel-sab" role="tabpanel" aria-labelledby="tab-sab">
+    <div class="tab-panel" id="panel-sab" role="tabpanel" aria-labelledby="tab-sab">
 
       <h2 class="govuk-heading-l">Solution Architecture Board (SAB)</h2>
       <div class="govuk-inset-text">
@@ -486,7 +621,7 @@
 
       <h2 class="govuk-heading-l">Review &amp; Export</h2>
       <p class="govuk-body">
-        Review your responses across all three boards before exporting. Unanswered questions are
+        Review your responses across all four boards before exporting. Unanswered questions are
         highlighted — you can return to any tab to complete them.
       </p>
 
@@ -682,6 +817,59 @@ const BOARDS = {
         hint: 'Confirm that a Business Continuity Plan (BCP) has been considered or is in place, and that the solution has been assessed against the organisation\'s operational resilience requirements.'
       }
     ]
+  },
+  cab: {
+    label: 'Change Advisory Board (CAB)',
+    questions: [
+      {
+        q: 'What is the nature, scope and category of the change?',
+        hint: 'Classify the change as Standard, Normal or Emergency. Describe what is changing and why, including affected components, services, and systems.'
+      },
+      {
+        q: 'What is the business justification and expected benefit of the change?',
+        hint: 'State the reason for the change, the benefit it delivers, and any regulatory, contractual or operational driver.'
+      },
+      {
+        q: 'What is the risk assessment for this change?',
+        hint: 'Rate likelihood and impact. Identify risks introduced by the change and mitigations in place. Include residual risk after mitigations.'
+      },
+      {
+        q: 'What systems, services, and users are affected by this change?',
+        hint: 'List all impacted systems, dependent services, and user groups. Confirm whether production, pre-production or both are affected.'
+      },
+      {
+        q: 'What testing has been completed prior to this change request?',
+        hint: 'Confirm the test types completed (unit, integration, regression, UAT, performance). State who signed off test results and where evidence is held.'
+      },
+      {
+        q: 'What is the rollback and back-out plan if the change fails?',
+        hint: 'Describe the step-by-step rollback procedure, who will execute it, and how long it will take. Confirm the rollback has been tested where possible.'
+      },
+      {
+        q: 'What is the proposed implementation schedule, maintenance window, and estimated duration?',
+        hint: 'State the planned date, time, and duration of the change window. Confirm the window has been agreed with service owners and operations teams.'
+      },
+      {
+        q: 'Have all relevant stakeholders been notified and approvals obtained?',
+        hint: 'List stakeholders who have been informed and those whose approval is required. Confirm that service owners, security, and operations have reviewed the change.'
+      },
+      {
+        q: 'Are there any change freeze periods, blackout dates, or release conflicts that apply?',
+        hint: 'Confirm the change does not fall within a release freeze, critical business period, or conflict with another scheduled change.'
+      },
+      {
+        q: 'What dependencies exist that could affect or be affected by this change?',
+        hint: 'Identify upstream and downstream dependencies. Confirm that dependency owners have been consulted and that sequencing is correct.'
+      },
+      {
+        q: 'What are the post-implementation review arrangements and success criteria?',
+        hint: 'Define how success will be measured, who will conduct the post-implementation review, and within what timeframe. Include monitoring and alerting checks to be performed after the change.'
+      },
+      {
+        q: 'Has a communication plan been prepared for impacted users and support teams?',
+        hint: 'Confirm that affected users and support staff have been notified in advance. Include planned communications for during and after the change window.'
+      }
+    ]
   }
 };
 
@@ -689,9 +877,10 @@ const BOARDS = {
    STATE
 ══════════════════════════════════════════════════════════════════ */
 const state = {
+  sab: { answers: [], rags: [] },
   tda: { answers: [], rags: [] },
   arb: { answers: [], rags: [] },
-  sab: { answers: [], rags: [] }
+  cab: { answers: [], rags: [] }
 };
 
 /* Initialise state arrays */
@@ -750,7 +939,7 @@ function renderQuestions(boardKey) {
 }
 
 function renderAllQuestions() {
-  ['tda','arb','sab'].forEach(renderQuestions);
+  ['sab','tda','arb','cab'].forEach(renderQuestions);
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -797,7 +986,7 @@ function updateProgress(board) {
 }
 
 function updateAllProgress() {
-  ['tda','arb','sab'].forEach(updateProgress);
+  ['sab','tda','arb','cab'].forEach(updateProgress);
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -825,7 +1014,7 @@ function buildSummary() {
   const container = document.getElementById('summary-content');
   container.innerHTML = '';
 
-  ['tda','arb','sab'].forEach(boardKey => {
+  ['sab','tda','arb','cab'].forEach(boardKey => {
     const board = BOARDS[boardKey];
     const section = document.createElement('div');
     section.className = 'summary-section';
@@ -884,7 +1073,7 @@ function exportWord() {
     <h1>Governance Review — Responses</h1>
     <p>Exported: ${date}</p>`;
 
-  ['tda','arb','sab'].forEach(boardKey => {
+  ['sab','tda','arb','cab'].forEach(boardKey => {
     const board = BOARDS[boardKey];
     html += `<h2>${board.label}</h2><table><tr><th>#</th><th>Question</th><th>RAG</th><th>Response</th></tr>`;
     board.questions.forEach((item, idx) => {
@@ -929,7 +1118,7 @@ function loadProgress(event) {
     try {
       const data = JSON.parse(e.target.result);
       if (!data.state) throw new Error('Invalid file');
-      ['tda','arb','sab'].forEach(board => {
+      ['sab','tda','arb','cab'].forEach(board => {
         if (data.state[board]) {
           const n = BOARDS[board].questions.length;
           state[board].answers = (data.state[board].answers || []).slice(0, n);
@@ -961,7 +1150,7 @@ function loadAutosave() {
     const raw = sessionStorage.getItem('govassure-governance');
     if (!raw) return;
     const saved = JSON.parse(raw);
-    ['tda','arb','sab'].forEach(board => {
+    ['sab','tda','arb','cab'].forEach(board => {
       if (saved[board]) {
         const n = BOARDS[board].questions.length;
         state[board].answers = (saved[board].answers || []).slice(0, n);
@@ -986,7 +1175,7 @@ function confirmReset() {
   try { sessionStorage.removeItem('govassure-governance'); } catch {}
   renderAllQuestions();
   updateAllProgress();
-  switchTab('tda');
+  switchTab('overview');
   notify('All responses cleared.', false);
 }
 
